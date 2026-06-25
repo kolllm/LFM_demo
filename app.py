@@ -74,10 +74,10 @@ with st.sidebar:
         ["Rectangular", "Hamming", "Blackman", "Kaiser"]
     )
 
-    nlfm_type = st.selectbox(
-        "NLFM频谱加权",
-        ["Hanning", "Taylor(近似)", "RaisedCosine"]
-    )
+    # nlfm_type = st.selectbox(
+    #     "NLFM频谱加权",
+    #     ["Hanning", "Taylor(近似)", "RaisedCosine"]
+    # )
 
     N = st.selectbox("FFT点数", [2048,4096,8192], index=1)
 
@@ -110,16 +110,16 @@ else:
 
     f_design = np.linspace(-B/2, B/2, N)
 
-    if nlfm_type == "Hanning":
-        win_spec = np.hanning(N)
+    # if nlfm_type == "Hanning":
+    win_spec = np.hanning(N)
 
-    elif nlfm_type == "RaisedCosine":
-        x = np.linspace(-1,1,N)
-        win_spec = 0.5*(1+np.cos(np.pi*x))
-
-    else:
-        x = np.linspace(-1,1,N)
-        win_spec = (1-x**2)**2
+    # elif nlfm_type == "RaisedCosine":
+    #     x = np.linspace(-1,1,N)
+    #     win_spec = 0.5*(1+np.cos(np.pi*x))
+    #
+    # else:
+    #     x = np.linspace(-1,1,N)
+    #     win_spec = (1-x**2)**2
 
     win_spec = win_spec/np.max(win_spec)
 
@@ -169,7 +169,7 @@ else:
 # ======================
 # 频谱
 # ======================
-S_f = np.fft.fftshift(np.fft.fft(s_signal, N))
+S_f = np.fft.fftshift(np.fft.fft(sig_r, N))
 spec_db = 20*np.log10(np.abs(S_f)/np.max(np.abs(S_f)) + 1e-12)
 
 # ======================
@@ -274,7 +274,14 @@ with tab1:
     # ... (保持原有的 Plotly 频谱绘图代码不变) ...
     fig = go.Figure()
     fig.add_scatter(x=f / 1e6, y=spec_db, mode="lines", name="Spectrum")
-    fig.update_layout(title=f"{wave_type} 频谱", xaxis_title="频率 (MHz)", yaxis_title="幅度 (dB)", height=600)
+    if wave_type == "NLFM":
+        fig.update_layout(title=f"{wave_type} 频谱", xaxis_title="频率 (MHz)", yaxis_title="幅度 (dB)", height=600)
+    else:
+        if window_type == "Rectangular":
+            fig.update_layout(title=f"{wave_type} 频谱", xaxis_title="频率 (MHz)", yaxis_title="幅度 (dB)", height=600)
+        else:
+            fig.update_layout(title=f"{wave_type} +窗函数频谱", xaxis_title="频率 (MHz)", yaxis_title="幅度 (dB)", height=600)
+
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
