@@ -5,9 +5,9 @@ import pandas as pd
 import plotly.graph_objects as go
 from scipy.signal import windows, find_peaks
 
-st.set_page_config(layout="wide", page_title="LFM、NLFM加窗对比演示")
+st.set_page_config(layout="wide", page_title="LFM加窗、NLFM对比演示")
 
-st.title("LFM、NLFM加窗对比演示")
+st.title("LFM加窗、NLFM对比演示")
 
 with st.sidebar:
     st.header("参数设置")
