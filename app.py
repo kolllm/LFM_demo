@@ -14,60 +14,9 @@ with st.sidebar:
 
     wave_type = st.radio("波形选择", ["LFM", "NLFM"])
 
-    # tau_us = st.slider("脉冲宽度 τ (us)", 1.0, 100.0, 10.0)
-    # B_MHz = st.slider("带宽 B (MHz)", 1.0, 200.0, 10.0)
-    # --- 修改开始：将脉冲宽度的slider替换为slider+number_input组合 ---
-    # 原始的单行slider代码
-    # tau_us = st.slider("脉冲宽度 τ (us)", 1.0, 100.0, 10.0)
+    tau_us = st.slider("脉冲宽度 τ (us)", 1.0, 100.0, 10.0)
+    B_MHz = st.slider("带宽 B (MHz)", 1.0, 200.0, 10.0)
 
-    # 新的组合：slider + number_input
-    col1, col2 = st.columns(2)
-    with col1:
-        tau_us_slider = st.slider("脉冲宽度 τ (us)", 1.0, 100.0, 10.0, key='tau_slider')
-    with col2:
-        tau_us_input = st.number_input("输入值 (us)", min_value=1.0, max_value=100.0, value=10.0, step=0.1,
-                                       key='tau_input')
-
-    # 确保slider和input的值同步
-    if tau_us_slider != tau_us_input:
-        if 'tau_sync' not in st.session_state:
-            st.session_state.tau_sync = 'slider'
-
-        if st.session_state.tau_sync == 'slider':
-            st.session_state.tau_input = tau_us_slider
-        else:
-            st.session_state.tau_slider = tau_us_input
-
-        st.experimental_rerun()
-    else:
-        st.session_state.tau_sync = 'slider'  # 或 'input'，两者一致即可
-    # --- 修改结束 ---
-
-    # --- 修改开始：将带宽的slider替换为slider+number_input组合 ---
-    # 原始的单行slider代码
-    # B_MHz = st.slider("带宽 B (MHz)", 1.0, 200.0, 10.0)
-
-    # 新的组合：slider + number_input
-    col1, col2 = st.columns(2)
-    with col1:
-        B_MHz_slider = st.slider("带宽 B (MHz)", 1.0, 200.0, 10.0, key='B_slider')
-    with col2:
-        B_MHz_input = st.number_input("输入值 (MHz)", min_value=1.0, max_value=200.0, value=10.0, step=0.1, key='B_input')
-
-    # 确保slider和input的值同步
-    if B_MHz_slider != B_MHz_input:
-        if 'B_sync' not in st.session_state:
-            st.session_state.B_sync = 'slider'
-
-        if st.session_state.B_sync == 'slider':
-            st.session_state.B_input = B_MHz_slider
-        else:
-            st.session_state.B_slider = B_MHz_input
-
-        st.experimental_rerun()
-    else:
-        st.session_state.B_sync = 'slider'  # 或 'input'，两者一致即可
-    # --- 修改结束 ---
 
     window_type = st.selectbox(
         "脉压窗函数",
@@ -81,8 +30,8 @@ with st.sidebar:
 
     N = st.selectbox("FFT点数", [2048,4096,8192], index=1)
 
-tau_us = st.session_state.tau_input
-B_MHz = st.session_state.B_input
+# tau_us = st.session_state.tau_input
+# B_MHz = st.session_state.B_input
 
 tau = tau_us*1e-6
 B = B_MHz*1e6
